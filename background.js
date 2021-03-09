@@ -1,5 +1,6 @@
 var slackUserId = "";
 var slackURL = "";
+var firstTime = true;
 
 function setOptionsFromStorage() {
     chrome.storage.local.get(function (items){
@@ -19,6 +20,11 @@ function claimTicket(ticketNo) {
     req.open("POST", baseUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.send(urlParams);
+    if (firstTime){
+        req.send(urlParams);
+        firstTime = false;
+    }
+    console.log("webhook fired");
 }
 
 
