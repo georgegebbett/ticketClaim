@@ -2,9 +2,6 @@ console.log("Zendesk content script loaded");
 
 var emailInserted = false;
 
-var firstTime = true;
-
-
 
 var observer = new MutationObserver(function(mutations, observer) {
     for (var mut = 0; mut < mutations.length; mut++) {
@@ -47,9 +44,6 @@ function claimTicket(clickEvent) {
     var tktNo = /#\d+/.exec(clickEvent.target.previousElementSibling.innerText);
     if (tktNo !== null){
         chrome.runtime.sendMessage({ticket: tktNo});
-        clickEvent.target.innerText = "Claimed";
-        clickEvent.target.style = "color: black;background-color: forestgreen;";
-        clickEvent.target.removeEventListener('click', claimTicket);
     }
 
 }
