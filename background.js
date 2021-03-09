@@ -24,7 +24,7 @@ function claimTicket(ticketNo) {
 
 chrome.runtime.onMessage.addListener(
     function(request, sender, sendResponse) {
-        console.log("Message received");
+        // console.log("Message received");
         claimTicket(request.ticket);
     }
 );

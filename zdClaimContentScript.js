@@ -11,7 +11,7 @@ var observer = new MutationObserver(function(mutations, observer) {
         if (emailInserted === false){
 
             try{
-                console.log("Tab change");
+                // console.log("Tab change");
                 var claimButton = document.createElement("span");
                 claimButton.className = "ember-view btn";
                 claimButton.classList.add("claimBtn");
@@ -20,14 +20,14 @@ var observer = new MutationObserver(function(mutations, observer) {
                 var allBtnGroups = document.getElementsByClassName("ember-view btn-group");
                 for (let item of allBtnGroups) {
                     if (!item.classList.contains("claimBtnAdded") && !item.classList.contains("apps_group")){
-                        console.log("append");
+                        // console.log("append");
                         item.appendChild(claimButton);
                         item.classList.add("claimBtnAdded");
                     }
                 }
 
             } catch(err){
-                console.log("error")
+                // console.log("error")
             }
         }
 
@@ -46,7 +46,6 @@ observer.observe(document, {
 function claimTicket(clickEvent) {
     var tktNo = /#\d+/.exec(clickEvent.target.previousElementSibling.innerText);
     if (tktNo !== null){
-        console.log(clickEvent);
         chrome.runtime.sendMessage({ticket: tktNo});
     }
 }
