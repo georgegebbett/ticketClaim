@@ -1,37 +1,28 @@
-var slackUserId = "";
-var slackURL = "";
-var firstTime = true;
-
-function setOptionsFromStorage() {
+function getOptionsAndClaimTicket(ticketNo) {
     chrome.storage.local.get(function (items){
-        slackUserId = items.slackID;
-        slackURL = items.slackURL;
+        console.log("looking up user ID");
+        console.log("user ID:", items.slackID, "\nURL:" , items.slackURL);
+        claimTicket(ticketNo, items.slackID, items.slackURL);
     })
 }
 
 
-function claimTicket(ticketNo) {
-    setOptionsFromStorage();
-    console.log("claming ticket");
+function claimTicket(ticketNo, slackUserID, slackURL) {
+    console.log("posting to slack");
     const req = new XMLHttpRequest();
     const baseUrl = slackURL;
-    const urlParams = "{\"ticket_number\": \"" + ticketNo + "\", \"slack_user\": \""+ slackUserId + "\"}";
-
+    const urlParams = "{\"ticket_number\": \"" + ticketNo + "\", \"slack_user\": \""+ slackUserID + "\"}";
     req.open("POST", baseUrl, true);
     req.setRequestHeader("Content-type", "application/json");
     req.send(urlParams);
-    if (firstTime){
-        req.send(urlParams);
-        firstTime = false;
-    }
-    console.log("webhook fired");
+    console.log("webhook fired", req);
 }
 
 
 chrome.runtime.onMessage.addListener(
-    function(request, sender, sendResponse) {
-        // console.log("Message received");
-        claimTicket(request.ticket);
+    function(request) {
+        console.log("Message received");
+        getOptionsAndClaimTicket(request.ticket);
     }
 );
 
