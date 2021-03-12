@@ -20,7 +20,8 @@ function restore_options() {
             if (items.slackURL === undefined) {
                 buttonList = [];
             } else {
-                buttonList = [{ID: 163, buttonLabel: "Claim", slackURL: items.slackURL}];
+                saveButtonList([{ID: 163, buttonLabel: "Claim", slackURL: items.slackURL}]);
+                restore_options();
             }
         }
         drawPageFromList(buttonList);
