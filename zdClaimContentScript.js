@@ -26,6 +26,13 @@ var observer = new MutationObserver(function (mutations, observer) {
                             item.appendChild(claimButton);
 
                         }
+
+                        let copyButton = document.createElement("span");
+                        copyButton.className = "ember-view btn";
+                        copyButton.classList.add("copyBtn");
+                        claimButton.innerText = "Copy Ticket No.";
+                        claimButton.addEventListener('click', copyTicket);
+                        item.appendChild(claimButton);
                     });
 
 
@@ -54,4 +61,21 @@ function claimTicket(clickEvent) {
     if (tktNo !== null) {
         chrome.runtime.sendMessage({ticket: tktNo, url:btnURL, texty:btnTxt});
     }
+}
+
+function copyTicket(clickEvent) {
+    let tktNo = /#\d+/.exec(clickEvent.target.parentElement.children[2].innerText);
+    copyToClipboard(tktNo);
+
+}
+
+function copyToClipboard(text) {
+    const input = document.createElement('textarea');
+    input.style.position = 'fixed';
+    input.style.opacity = 0;
+    input.value = text;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('Copy');
+    document.body.removeChild(input);
 }
