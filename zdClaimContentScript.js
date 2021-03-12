@@ -1,6 +1,6 @@
 console.log("Zendesk ticket claim content script loaded");
 
-buttonList = [];
+var buttonList = [];
 
 var observer = new MutationObserver(function (mutations, observer) {
     for (var mut = 0; mut < mutations.length; mut++) {
@@ -11,9 +11,15 @@ var observer = new MutationObserver(function (mutations, observer) {
                 if (!item.classList.contains("claimBtnAdded") && !item.classList.contains("apps_group")) {
                     // console.log("append");
                     item.classList.add("claimBtnAdded");
-                    chrome.storage.local.get({buttonList:[]}, function (items){
+                    chrome.storage.local.get(function (items){
                         if (items.buttonList !== undefined){
                             buttonList = items.buttonList;
+                        } else {
+                            if (items.slackURL === undefined) {
+                                buttonList = [];
+                            } else {
+                                buttonList = [{ID: 163, buttonLabel: "Claim", slackURL: items.slackURL}];
+                            }
                         }
                         for (let buttonToInsert of buttonList){
 
@@ -30,9 +36,9 @@ var observer = new MutationObserver(function (mutations, observer) {
                         let copyButton = document.createElement("span");
                         copyButton.className = "ember-view btn";
                         copyButton.classList.add("copyBtn");
-                        claimButton.innerText = "Copy Ticket No.";
-                        claimButton.addEventListener('click', copyTicket);
-                        item.appendChild(claimButton);
+                        copyButton.innerText = "Copy Ticket No.";
+                        copyButton.addEventListener('click', copyTicket);
+                        item.appendChild(copyButton);
                     });
 
 

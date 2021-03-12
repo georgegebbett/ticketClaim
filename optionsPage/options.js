@@ -16,9 +16,20 @@ function restore_options() {
         document.getElementById("slackID").value = items.slackID;
         if (items.buttonList !== undefined){
             buttonList = items.buttonList;
+        } else {
+            if (items.slackURL === undefined) {
+                buttonList = [];
+            } else {
+                buttonList = [{ID: 163, buttonLabel: "Claim", slackURL: items.slackURL}];
+            }
         }
         drawPageFromList(buttonList);
     })
+}
+
+function deleteButtonsFromStorage() {
+    chrome.storage.local.remove('buttonList');
+    restore_options();
 }
 
 function generateID(){
@@ -104,3 +115,4 @@ function drawPageFromList(buttonList){
 
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById("newButtButt").addEventListener('click', addNewButton);
+document.getElementById("delButts").addEventListener('click', deleteButtonsFromStorage);
