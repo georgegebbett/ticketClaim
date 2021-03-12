@@ -1,6 +1,6 @@
 {
   "name": "Zendesk to Slack Ticket Claimer",
-  "version": "1.5",
+  "version": "2.0",
   "description": "Claim a ZD ticket and post to Slack",
   "permissions": [
     "http://*.zendesk.com/*",
