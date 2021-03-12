@@ -1,8 +1,8 @@
-function getOptionsAndClaimTicket(ticketNo) {
+function getOptionsAndClaimTicket(ticketNo, hookURL) {
     chrome.storage.local.get(function (items){
         console.log("looking up user ID");
-        console.log("user ID:", items.slackID, "\nURL:" , items.slackURL);
-        claimTicket(ticketNo, items.slackID, items.slackURL);
+        console.log("user ID:", items.slackID);
+        claimTicket(ticketNo, items.slackID, hookURL);
     })
 }
 
@@ -22,7 +22,7 @@ function claimTicket(ticketNo, slackUserID, slackURL) {
 chrome.runtime.onMessage.addListener(
     function(request) {
         console.log("Message received");
-        getOptionsAndClaimTicket(request.ticket);
+        getOptionsAndClaimTicket(request.ticket, request.url);
     }
 );
 

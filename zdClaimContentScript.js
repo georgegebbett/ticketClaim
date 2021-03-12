@@ -10,12 +10,23 @@ var observer = new MutationObserver(function (mutations, observer) {
             for (let item of allBtnGroups) {
                 if (!item.classList.contains("claimBtnAdded") && !item.classList.contains("apps_group")) {
                     // console.log("append");
-                    let claimButton = document.createElement("span");
-                    claimButton.className = "ember-view btn";
-                    claimButton.classList.add("claimBtn");
-                    claimButton.innerText = "Claim";
-                    claimButton.addEventListener('click', claimTicket);
-                    item.appendChild(claimButton);
+                    chrome.storage.local.get({buttonList:[]}, function (items){
+                        if (items.buttonList !== undefined){
+                            buttonList = items.buttonList;
+                        }
+                    })
+
+                    for (let buttonToInsert of buttonList){
+
+                        let claimButton = document.createElement("span");
+                        claimButton.className = "ember-view btn";
+                        claimButton.classList.add("claimBtn");
+                        claimButton.buttonURL = buttonToInsert.slackURL;
+                        claimButton.innerText = buttonToInsert.buttonLabel;
+                        claimButton.addEventListener('click', claimTicket);
+                        item.appendChild(claimButton);
+                    }
+
                     item.classList.add("claimBtnAdded");
                 }
             }
@@ -34,8 +45,9 @@ observer.observe(document, {
 
 
 function claimTicket(clickEvent) {
-    var tktNo = /#\d+/.exec(clickEvent.target.previousElementSibling.innerText);
+    let tktNo = /#\d+/.exec(clickEvent.target.previousElementSibling.innerText);
+    let btnURL = clickEvent.target.buttonURL;
     if (tktNo !== null) {
-        chrome.runtime.sendMessage({ticket: tktNo});
+        chrome.runtime.sendMessage({ticket: tktNo, url:btnURL});
     }
 }
