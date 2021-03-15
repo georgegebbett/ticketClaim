@@ -113,7 +113,45 @@ function drawPageFromList(buttonList){
     }
 }
 
+function exportButtonList(){
+    let buttonBlob = new Blob([JSON.stringify(buttonList)]);
+    saveBlob(buttonBlob, "buttons.buttonlist");
+
+}
+
+function importButtonList(){
+    let importedFile = document.getElementById("uploadSelector").files[0];
+    console.log(importedFile);
+    importedFile.text().then(text => {
+        console.log(text);
+        try{
+            buttonList = JSON.parse(text);
+            document.getElementById("importError").hidden = true;
+            document.getElementById("importSuccess").hidden = false;
+            drawPageFromList(buttonList);
+        } catch {
+            document.getElementById("importError").hidden = false;
+            document.getElementById("importSuccess").hidden = true;
+        }
+
+
+    });
+}
+
+function saveBlob(blob, fileName) {
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
 
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById("newButtButt").addEventListener('click', addNewButton);
 document.getElementById("delButts").addEventListener('click', deleteButtonsFromStorage);
+document.getElementById("exportButtons").addEventListener('click', exportButtonList);
+document.getElementById("uploadSelector").addEventListener('change', importButtonList);

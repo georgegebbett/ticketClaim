@@ -12,6 +12,7 @@
 <form id="oldForm">
     <label for="slackID">Slack user ID: </label><input id="slackID"><br>
 </form>
+<hr>
 
 <table id="buttTab">
     <thead>
@@ -25,7 +26,12 @@
 
     </tbody>
 </table>
-<button id="newButtButt">Add Button</button>
+<br>
+<button id="newButtButt">Add Button</button><br><br><hr>
+<button id="exportButtons">Export buttons</button>
+<label for="uploadSelector">Import buttons</label><input id="uploadSelector" type="file" accept=".buttonlist">
+<p hidden style="color: red" id="importError">Import Error</p>
+<p hidden style="color: forestgreen" id="importSuccess">Import Success</p>
 <button id="delButts" hidden>Del Buttons</button>
 <script src="options.js"></script>
 
