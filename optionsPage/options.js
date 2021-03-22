@@ -129,6 +129,7 @@ function importButtonList(){
             document.getElementById("importError").hidden = true;
             document.getElementById("importSuccess").hidden = false;
             drawPageFromList(buttonList);
+            saveButtonList(buttonList);
         } catch {
             document.getElementById("importError").hidden = false;
             document.getElementById("importSuccess").hidden = true;
@@ -150,8 +151,16 @@ function saveBlob(blob, fileName) {
     window.URL.revokeObjectURL(url);
 }
 
+function saveOptions() {
+    chrome.storage.local.set({
+        slackID: document.getElementById("slackID").value,
+    });
+}
+
+
 document.addEventListener('DOMContentLoaded', restore_options);
 document.getElementById("newButtButt").addEventListener('click', addNewButton);
 document.getElementById("delButts").addEventListener('click', deleteButtonsFromStorage);
 document.getElementById("exportButtons").addEventListener('click', exportButtonList);
 document.getElementById("uploadSelector").addEventListener('change', importButtonList);
+document.getElementById("slackID").addEventListener('change', saveOptions);
